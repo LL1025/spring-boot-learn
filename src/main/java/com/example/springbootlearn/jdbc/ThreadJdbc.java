@@ -13,7 +13,7 @@ public class ThreadJdbc {
 
     private static final ThreadLocal<Connection> threadLocal = new ThreadLocal<>();
 
-    private static final String url = "jdbc:mysql://127.0.0.1:3306/local-test";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC";
     private static final String user = "root";
     private static final String password = "root";
 

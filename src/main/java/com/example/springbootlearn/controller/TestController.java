@@ -1,5 +1,6 @@
 package com.example.springbootlearn.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.springbootlearn.Do.UserDO;
 import com.example.springbootlearn.jdbc.ThreadJdbc;
 import com.example.springbootlearn.service.AopService;
@@ -34,11 +35,11 @@ public class TestController {
     }
 
     @PostMapping("/threadLocal/test")
-    public void threadLocalTest() {
+    public JSONObject threadLocalTest() {
         UserDO userDO = new UserDO();
         userDO.setAge(18);
         userDO.setName("张三");
-        threadLocalService.testThreadLocal(userDO);
+        return threadLocalService.testThreadLocal(userDO);
     }
 
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
 package com.example.springbootlearn.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.springbootlearn.Do.UserDO;
 import jdk.internal.org.objectweb.asm.tree.VarInsnNode;
 
@@ -10,5 +11,5 @@ import jdk.internal.org.objectweb.asm.tree.VarInsnNode;
  */
 public interface ThreadLocalService {
 
-    void testThreadLocal(UserDO userDO);
+    JSONObject testThreadLocal(UserDO userDO);
 }
