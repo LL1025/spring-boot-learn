@@ -6,4 +6,10 @@ package com.example.springbootlearn.service;
  * @description TODO: 测试策略模式
  */
 public interface ModelService {
+
+    /**
+     * 接口方法
+     * @param param
+     */
+    void sendReturn(String param);
 }

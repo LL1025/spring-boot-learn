@@ -2,6 +2,7 @@ package com.example.springbootlearn.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springbootlearn.Do.UserDO;
+import com.example.springbootlearn.factory.ModelFactory;
 import com.example.springbootlearn.jdbc.ThreadJdbc;
 import com.example.springbootlearn.service.AopService;
 import com.example.springbootlearn.service.MyBatisPlusService;
@@ -12,6 +13,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Connection;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * @author linW2
@@ -28,8 +33,11 @@ public class TestController {
     private ThreadLocalService threadLocalService;
 
     private final MyBatisPlusService myBatisPlusService;
+    @Autowired
+    private ModelFactory modelFactory;
 
-    public TestController(MyBatisPlusService myBatisPlusService){
+
+    public TestController(MyBatisPlusService myBatisPlusService) {
         this.myBatisPlusService = myBatisPlusService;
     }
 
@@ -57,6 +65,18 @@ public class TestController {
         myBatisPlusService.inserUserAndClass();
     }
 
+    @PostMapping("/model/test")
+    public void modelTest() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(() ->{
+            ModelFactory.getModelService("modelAServiceImpl").sendReturn("策略A");
+        });
+        Thread.sleep(5000);
+        executorService.submit(() ->{
+            ModelFactory.getModelService("modelBServiceImpl").sendReturn("策略B");
+        });
+
+    }
     public static void main(String[] args) {
         Connection connection = ThreadJdbc.getConnection();
         if (connection != null) {
