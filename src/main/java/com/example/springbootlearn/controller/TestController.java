@@ -3,6 +3,7 @@ package com.example.springbootlearn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springbootlearn.Do.UserDO;
 import com.example.springbootlearn.factory.ModelFactory;
+import com.example.springbootlearn.factory.ModelFactoryCus;
 import com.example.springbootlearn.jdbc.ThreadJdbc;
 import com.example.springbootlearn.service.AopService;
 import com.example.springbootlearn.service.MyBatisPlusService;
@@ -34,7 +35,7 @@ public class TestController {
 
     private final MyBatisPlusService myBatisPlusService;
     @Autowired
-    private ModelFactory modelFactory;
+    private ModelFactoryCus modelFactoryCus;
 
 
     public TestController(MyBatisPlusService myBatisPlusService) {
@@ -75,7 +76,18 @@ public class TestController {
         executorService.submit(() ->{
             ModelFactory.getModelService("modelBServiceImpl").sendReturn("策略B");
         });
+    }
 
+    @PostMapping("/abstract/model/test")
+    public void abstractModelTest() throws InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        executorService.submit(() ->{
+            modelFactoryCus.getModelFactory("modelAServiceImpl").sendReturn("AAAAAA");
+        });
+        Thread.sleep(5000);
+        executorService.submit(() ->{
+            modelFactoryCus.getModelFactory("modelBServiceImpl").sendReturn("BBBBBB");
+        });
     }
     public static void main(String[] args) {
         Connection connection = ThreadJdbc.getConnection();
