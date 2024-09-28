@@ -1,5 +1,6 @@
 package com.example.springbootlearn.Do;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,11 +11,12 @@ import java.io.Serializable;
  * @description TODO: 描述类的功能
  */
 @Data
+@TableName("user")
 public class UserDO implements Serializable {
 
-    String name;
+    String userName;
 
-    Integer age;
+    Integer userAge;
 
 //    public UserDO(String name, Integer age) {
 //        this.name = name;

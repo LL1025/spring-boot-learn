@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.springbootlearn.Do.UserDO;
 import com.example.springbootlearn.jdbc.ThreadJdbc;
 import com.example.springbootlearn.service.AopService;
+import com.example.springbootlearn.service.MyBatisPlusService;
 import com.example.springbootlearn.service.ThreadLocalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,27 +27,40 @@ public class TestController {
     @Autowired
     private ThreadLocalService threadLocalService;
 
+    private final MyBatisPlusService myBatisPlusService;
+
+    public TestController(MyBatisPlusService myBatisPlusService){
+        this.myBatisPlusService = myBatisPlusService;
+    }
+
     @PostMapping("/aop/test")
     public void aopTest() {
         UserDO userDO = new UserDO();
-        userDO.setAge(18);
-        userDO.setName("张三");
+        userDO.setUserAge(18);
+        userDO.setUserName("张三");
         aopService.testAop(userDO);
     }
 
     @PostMapping("/threadLocal/test")
     public JSONObject threadLocalTest() {
         UserDO userDO = new UserDO();
-        userDO.setAge(18);
-        userDO.setName("张三");
+        userDO.setUserAge(18);
+        userDO.setUserName("张三");
         return threadLocalService.testThreadLocal(userDO);
+    }
+
+    @PostMapping("/mybatisPlus/test")
+    public void mybatisPlusTest() {
+        UserDO userDO = new UserDO();
+        userDO.setUserAge(18);
+        userDO.setUserName("张三");
+        myBatisPlusService.inserUserAndClass();
     }
 
     public static void main(String[] args) {
         Connection connection = ThreadJdbc.getConnection();
         if (connection != null) {
             System.out.println("数据库连接成功");
-
             ThreadJdbc.closeConnection();
         }
 

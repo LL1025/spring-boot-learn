@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.springbootlearn.mapper.UserMapper">
+
+    <!-- 根据 ID 查询用户 -->
+    <select id="selectById" parameterType="java.lang.Long" resultType="com.your.package.UserDO">
+        SELECT name, age FROM user WHERE id = #{id}
+    </select>
+
+    <!-- 查询所有用户 -->
+    <select id="selectAll" resultType="com.your.package.UserDO">
+        SELECT name, age FROM user
+    </select>
+
+    <!-- 插入用户 -->
+    <insert id="insertUser" parameterType="com.your.package.UserDO">
+        INSERT INTO user (name, age) VALUES (#{name}, #{age})
+    </insert>
+
+    <!-- 更新用户 -->
+    <update id="updateUser" parameterType="com.your.package.UserDO">
+        UPDATE user SET name = #{name}, age = #{age} WHERE id = #{id}
+    </update>
+
+    <!-- 删除用户 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM user WHERE id = #{id}
+    </delete>
+
+</mapper>

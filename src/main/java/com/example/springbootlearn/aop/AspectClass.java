@@ -46,8 +46,8 @@ public class AspectClass {
             UserDO userCopy = objectMapper.readValue(objectMapper.writeValueAsString(originalUser), UserDO.class);
 
             // 修改副本对象
-            userCopy.setName("李四");
-            userCopy.setAge(30);
+            userCopy.setUserName("李四");
+            userCopy.setUserAge(30);
 
             // 使用副本调用目标方法
             Object returnValue = joinPoint.proceed(new Object[]{userCopy});
