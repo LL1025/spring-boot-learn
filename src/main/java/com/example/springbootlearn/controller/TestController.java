@@ -13,6 +13,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sound.midi.Soundbank;
+import java.lang.ref.PhantomReference;
+import java.lang.ref.ReferenceQueue;
+import java.lang.ref.SoftReference;
+import java.lang.ref.WeakReference;
 import java.sql.Connection;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -90,10 +95,50 @@ public class TestController {
         });
     }
     public static void main(String[] args) {
-        Connection connection = ThreadJdbc.getConnection();
-        if (connection != null) {
-            System.out.println("数据库连接成功");
-            ThreadJdbc.closeConnection();
+//        Connection connection = ThreadJdbc.getConnection();
+//        if (connection != null) {
+//            System.out.println("数据库连接成功");
+//            ThreadJdbc.closeConnection();
+//        }
+
+        //创建一个对象
+        UserDO userDO = new UserDO();
+        userDO.setUserAge(18);
+        //创建一个虚引用队列
+        ReferenceQueue<Object> referenceQueue = new ReferenceQueue<>();
+        PhantomReference<UserDO> phantomReference = new PhantomReference<>(userDO, referenceQueue);
+
+        //强引用
+        UserDO userDO1 = new UserDO();
+        userDO1.setUserAge(18);
+        System.out.println(userDO1);
+
+        //弱引用
+        WeakReference<UserDO> weakReference = new WeakReference<>(userDO);
+
+        //软引用
+        SoftReference<UserDO> softReference = new SoftReference<>(userDO);
+
+        //此时对象还未被回收，我们可以用强引用访问对象
+        System.out.println("强引用：" + userDO.getUserAge());
+
+
+        //因为上面使用的强引用进行访问对象，现在需要取消强引用，才能被GC
+        userDO = null;
+        //对对象进行GC操作
+        System.gc();
+
+        //再次使用强引用访问对象的时候，应该时访问不到才对
+//        System.out.println("取消强引用后" + userDO.getUserAge());
+
+        try {
+            // 从引用队列中获取虚引用
+            PhantomReference<Object> removedReference = (PhantomReference<Object>) referenceQueue.remove();
+            if (removedReference!= null) {
+                System.out.println("Object has been garbage collected.");
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
     }
